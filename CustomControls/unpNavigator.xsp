@@ -24,9 +24,10 @@ the specific language governing permissions and limitations under the License
 						disableOutputTag="true" var="menuItem">
 						<xp:this.value><![CDATA[#{javascript:compositeData.menuItem;}]]></xp:this.value>
 						<xp:panel id="viewMenuItem" tagName="li">
+						
 							<xp:this.styleClass><![CDATA[#{javascript:var out = "";
 if (("/" + getCurrentXPage()) == menuItem.page){
-	out += "menuitem" + viewScope.menuItemIndex + " viewMenuItemSelected";
+	out += "menuitem" + viewScope.menuItemIndex + " viewMenuItem viewMenuItemSelected";
 }else{
 	out += "menuitem" + viewScope.menuItemIndex + " viewMenuItem";
 }
@@ -55,16 +56,16 @@ return out;}]]></xp:this.styleClass>
 							</xp:this.attrs>
 							<xp:panel id="menulink" tagName="div"
 								styleClass="menulink">
-								<xp:image
-									url="#{javascript:menuItem.icon}" id="image2"
-									styleClass="iconleft">
-									<xp:this.rendered><![CDATA[#{javascript:if (viewScope.menuItemIndex == null){
+								
+								<xp:text tagName="i" id="icon" escape="false" styleClass="#{javascript:'glyphicons unp-glyph-white ' + menuItem.icon}">
+								<xp:this.rendered><![CDATA[#{javascript:if (viewScope.menuItemIndex == null){
 	viewScope.menuItemIndex = 0;
 }else{
 	viewScope.menuItemIndex = viewScope.menuItemIndex + 1;
 }
 menuItem.icon != null && menuItem.icon != ""}]]></xp:this.rendered>
-								</xp:image>
+								</xp:text>
+								
 								<xp:text id="menutext"
 									styleClass="menutext" value="#{javascript:menuItem.label;}">
 								</xp:text>
