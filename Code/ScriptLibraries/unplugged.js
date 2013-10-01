@@ -174,6 +174,9 @@ function openDocument(url, target) {
 				if (firedrequests != null) {
 					firedrequests = new Array();
 				}
+				
+				unp.storePageRequest(url);
+				
 				initiscroll();
 				if (url.indexOf("editDocument") > -1
 						|| url.indexOf("newDocument") > -1) {
@@ -285,6 +288,9 @@ function loadPage(url, target, menuitem) {
 		if (firedrequests != null) {
 			firedrequests = new Array();
 		}
+		
+		unp.storePageRequest(url);
+		
 		initiscroll();
 		initHorizontalView();
 		initDeleteable();
@@ -776,4 +782,40 @@ function dropdownToggle(element){
 	}else{
 		$(".dropdown-menu").toggle();
 	}
+}
+
+var unp = {
+		
+	//keep track of all ajax requests, so we can easily return to the previous page
+	_pageRequests : [],
+	
+	storePageRequest : function(url) {
+	
+		this._pageRequests.push(url);
+		
+		if (this._pageRequests.length > 25 ) {
+			this._pageRequests.splice(0,1);
+		}
+	
+	},
+	
+	goBack : function() {
+	
+		var pos = this._pageRequests.length - 2;
+		var url;
+		
+		if (pos < 0 ) {
+			url = "UnpMain.xsp";
+			//url = window.location.pathname + window.location.search;
+		} else {
+			
+			url = this._pageRequests[pos];
+			this._pageRequests.splice(pos, 2);
+			
+		}
+		
+		loadPage( url , 'contentwrapper');
+	
+	}
+		
 }
