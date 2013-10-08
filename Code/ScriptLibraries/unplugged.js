@@ -73,8 +73,28 @@ $(window)
 					initHorizontalView();
 					initDeleteable();
 					initAutoComplete();
-					
+					initHideFooter();
+					$(document).ajaxStop(initHideFooter);
 				});
+
+function initHideFooter(){
+	try{
+		$('input').on('focus', function(){
+			$(".footer").hide();
+		});
+		$('input').on('blur', function(){
+			$(".footer").show();
+		});
+		$('textarea').on('focus', function(){
+			$(".footer").hide();
+		});
+		$('textarea').on('blur', function(){
+			$(".footer").show();
+		});
+	}catch(e){
+		
+	}
+}
 
 function getURLParameter(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
