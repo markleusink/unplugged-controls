@@ -298,15 +298,23 @@ function hideViewsMenu() {
 }
 
 var firedrequests;
-function loadPage(url, target, menuitem) {
+function loadPage(url, target, menuitem, loadFooter) {
 	var thisArea = $("#" + target);
-	thisArea.load(url, function() {
+	thisArea.load(url, function(data) {
 
 		if (firedrequests != null) {
 			firedrequests = new Array();
 		}
 		
 		unp.storePageRequest(url);
+		
+		//extract footer content from ajax request and update footer
+		if (loadFooter) {
+			var footerNode = $(data).find(".footer");
+			if (footerNode) {
+				$(".footer").html( footerNode );
+			}
+		}
 		
 		initiscroll();
 		initHorizontalView();
