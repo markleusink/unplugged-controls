@@ -101,10 +101,12 @@ if (rep == "01/01/70"){
 return "Updated: " + rep;}]]></xp:this.value>
 		</xp:text>
 		<xp:panel tagName="div" id="newButton" styleClass="newButton"
-			rendered="#{javascript:compositeData.newDocTarget != null;}">
+			rendered="#{javascript:!isEmpty( compositeData.newDocTarget ) || compositeData.newDocLoadType=='dialog'}">
 			<xp:this.attrs>
 				<xp:attr name="onclick">
-					<xp:this.value><![CDATA[#{javascript:if (compositeData.newDocLoadType != "full"){
+					<xp:this.value><![CDATA[#{javascript:if ( compositeData.newDocLoadType == "dialog" ) {
+					return "dropdownToggle()";
+					} else if (compositeData.newDocLoadType != "full"){
 	return "openDocument('" + compositeData.newDocTarget + "?action=newDocument', 'content');";
 }else{
 	return "$.blockUI();window.location.href='" + compositeData.newDocTarget + "?action=newDocument';";

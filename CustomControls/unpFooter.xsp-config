@@ -57,7 +57,8 @@
         <designer-extension>
           <editor>com.ibm.workplace.designer.property.editors.comboParameterEditor</editor>
           <editor-parameter>ajax&#xd;
-full</editor-parameter>
+full&#xd;
+dialog</editor-parameter>
           <default-value>ajax</default-value>
         </designer-extension>
         <required>false</required>

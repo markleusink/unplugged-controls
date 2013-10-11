@@ -181,18 +181,26 @@ function loadmore(dbName, viewName, summarycol, detailcol, category, xpage,
 	}
 }
 
-function openDocument(url, target) {
+function openDocument(url, target, loadFooter) {
 	// $.blockUI();
 	// document.location.href = url;
 	var thisArea = $("#" + target);
 	thisArea.load(url.replace(" ", "%20") + " #contentwrapper",
-			function() {
+			function(data) {
 
 				if (firedrequests != null) {
 					firedrequests = new Array();
 				}
 				
 				unp.storePageRequest(url);
+				
+				//extract footer content from ajax request and update footer
+				if (loadFooter) {
+					var footerNode = $(data).find(".footer");
+					if (footerNode) {
+						$(".footer").html( footerNode );
+					}
+				}
 				
 				initiscroll();
 				if (url.indexOf("editDocument") > -1
@@ -815,6 +823,15 @@ var unp = {
 	_pageRequests : [],
 	
 	storePageRequest : function(url) {
+	
+		//don't add the same request twice (at the same position)
+		if ( this._pageRequests.length>0 ) {
+			var urlLast = this._pageRequests[this._pageRequests.length-1];
+			
+			if (urlLast == url) {
+				return;
+			}
+		}
 	
 		this._pageRequests.push(url);
 		
