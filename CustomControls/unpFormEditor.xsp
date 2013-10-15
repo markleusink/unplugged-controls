@@ -67,7 +67,8 @@ return out;}]]></xp:this.value>
 					<xp:panel id="closebutton" styleClass="cancelButton"
 						tagName="li">
 						<xp:this.attrs>
-							<xp:attr name="onclick" value="unp.goBack()">
+							<xp:attr name="onclick">
+								<xp:this.value><![CDATA[#{javascript:return "history.back()";}]]></xp:this.value>
 							</xp:attr>
 						</xp:this.attrs>
 						<span class="formbuttonlabel">Cancel</span>
