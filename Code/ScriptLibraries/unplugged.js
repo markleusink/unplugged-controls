@@ -333,6 +333,7 @@ function loadPage(url, target, menuitem, pushState, loadFooter) {
 			if (footerNode) {
 				$(".footer").html( footerNode );
 			}
+		}
 
 		if (_pushState) {
 			unp.storePageRequest(url);
