@@ -213,9 +213,13 @@ no</editor-parameter>
       </property-extension>
     </property>
     <property>
-      <property-name>placeHolderIcon</property-name>
+      <property-name>categoryindex</property-name>
       <property-class>string</property-class>
-      <description>Name of the Glyphicon to be used as a placeholder for records without an image.</description>
+      <property-extension>
+        <designer-extension>
+          <default-value>0</default-value>
+        </designer-extension>
+      </property-extension>
     </property>
   </composite-component>
 </faces-config>

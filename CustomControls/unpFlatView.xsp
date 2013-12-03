@@ -77,8 +77,12 @@ if (compositeData.enableAZPicker == "yes"){
 						<xp:panel tagName="li" id="categoryrow"
 							styleClass="categoryRowFixed condensed" disableTheme="true"
 							rendered="#{javascript:thisRowData.isCategory()}">
-							<xp:text
-								value="#{javascript:thisRowData.getColumnValues().elementAt(0)}">
+							<xp:text>
+								<xp:this.value><![CDATA[#{javascript:var index = 0;
+if (!isEmpty(compositeData.categoryindex)){
+	index = parseInt(compositeData.categoryindex, 10);
+}
+return thisRowData.getColumnValues().elementAt(index);}]]></xp:this.value>
 							</xp:text>
 						</xp:panel>
 						<xp:panel tagName="li" id="datarow"
@@ -86,9 +90,9 @@ if (compositeData.enableAZPicker == "yes"){
 							<xp:this.attrs>
 								<xp:attr name="onClick">
 									<xp:this.value><![CDATA[#{javascript:
-	var url = getDbPath() + "/" + compositeData.xpageDoc + "?action=openDocument&documentId=" + thisRowData.getDocument().getUniversalID();
+	var url = getDbPath() + "/" + compositeData.xpageDoc + "?action=openDocument&documentId=" + thisRowData.getUniversalID();
 	if (compositeData.ajaxload != "No"){
-		return "openDocument('" + url + "', 'content', true);"
+		return "openDocument('" + url + "', 'content');"
 	}else{
 		return "document.location.href='" + url + "'";
 	}
@@ -107,43 +111,32 @@ if (viewScope.rowcount == 1 && isEmpty(compositeData.title)){
 if (compositeData.collapseRows == "Yes"){
 	out += " collapse-row";
 }
-return out;}]]></xp:this.styleClass>
-
-<div class="thumbContainer">
-						
-								<xp:div styleClass="bgThumbnail">
-									<xp:this.rendered><![CDATA[#{javascript:var photocol = compositeData.photoColumn;
-									return !isEmpty(photocol) && !isEmpty( thisRowData.getColumnValue(photocol) );}]]></xp:this.rendered>
-	
-								<xp:this.attrs>
-									<xp:attr name="style">
-										<xp:this.value><![CDATA[#{javascript:var photo = thisRowData.getColumnValue(compositeData.photoColumn);
-	
-	"background-image: url('" + photo + "');"}]]></xp:this.value>
-									</xp:attr>
-								</xp:this.attrs>
-								</xp:div>
-								
-								<xp:text tagName="i" id="icon" escape="false" 
-									styleClass="#{javascript:'glyphicons unp-glyph-grey ' + compositeData.placeHolderIcon}">
-										<xp:this.rendered><![CDATA[#{javascript:var photocol = compositeData.photoColumn;
-									return !isEmpty(photocol) && isEmpty( thisRowData.getColumnValue(photocol) );}]]></xp:this.rendered>
-								
-								</xp:text>
-							</div>
-							
-							<xp:image id="image1">
-								<xp:this.styleClass><![CDATA[#{javascript:if(isEmpty(compositeData.detailColumn) || compositeData.collapseRows == "Yes"){ 
-	return 'singleLineIcon';
-} else {
-	return 'multiLineIcon';
-}}]]></xp:this.styleClass>
-								<xp:this.url><![CDATA[#{javascript:if (compositeData.collapseRows == "Yes"){
-	return "/unp/arrow-down.png";
+if (compositeData.enableAZPicker == "yes"){
+	out += " picker";
 }else{
-	return "/unp/right-arrow-circle.png";
-}}]]></xp:this.url>
+	out += " no-picker";
+}
+return out;}]]></xp:this.styleClass>
+							<xp:image
+								url="#{javascript:thisRowData.getColumnValue(compositeData.photoColumn)}">
+								<xp:this.rendered><![CDATA[#{javascript:if (compositeData.photoColumn != null && compositeData.photoColumn != ""){
+	try{
+		if (thisRowData.getColumnValue(compositeData.photoColumn) != ""){
+			return true;
+		}else{
+			return false;
+		}
+	}catch(e){
+		return false;
+	}
+}else{
+	return false;
+}}]]></xp:this.rendered>
+								<xp:this.styleClass><![CDATA[#{javascript:if (thisRowData.getColumnValue(compositeData.photoColumn) != ""){
+	return "rowphoto";
+}}]]></xp:this.styleClass>
 							</xp:image>
+
 							<xp:label id="label2"
 								value="#{javascript:thisRowData.getColumnValue(compositeData.summaryColumn);}">
 								<xp:this.styleClass><![CDATA[#{javascript:var out = "viewlistsummary";
@@ -191,7 +184,7 @@ return out;}]]></xp:this.styleClass>
 						styleClass="loadmorebutton">
 						<xp:this.attrs>
 							<xp:attr name="onclick">
-								<xp:this.value><![CDATA[#{javascript:"loadmore('" + compositeData.dbName + "', '" + compositeData.viewName + "', '" + compositeData.summaryColumn + "', '" + compositeData.detailColumn + "', '" + compositeData.categoryfilter + "', '" + compositeData.xpageDoc + "', '" + compositeData.refreshmethod + "', '" + compositeData.photoColumn + "', '" + compositeData.collapseRows + "', '" + compositeData.wrapsummarytext + "', '" + compositeData.ajaxload + "', '" + compositeData.placeHolderIcon + "')"}]]></xp:this.value>
+								<xp:this.value><![CDATA[#{javascript:"loadmore('" + compositeData.dbName + "', '" + compositeData.viewName + "', '" + compositeData.summaryColumn + "', '" + compositeData.detailColumn + "', '" + compositeData.categoryfilter + "', '" + compositeData.xpageDoc + "', '" + compositeData.refreshmethod + "', '" + compositeData.photoColumn + "', '" + compositeData.collapseRows + "', '" + compositeData.wrapsummarytext + "', '" + compositeData.ajaxload + "')"}]]></xp:this.value>
 							</xp:attr>
 						</xp:this.attrs>
 					</xp:button>
