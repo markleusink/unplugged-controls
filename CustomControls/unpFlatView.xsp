@@ -122,7 +122,7 @@ return out;}]]></xp:this.styleClass>
 								<xp:div styleClass="bgThumbnail">
 									<xp:this.rendered><![CDATA[#{javascript:var photocol = compositeData.photoColumn;
 									var photo = thisRowData.getColumnValue(photocol);
-									return !isEmpty(photocol) && !isEmpty( photo ) && photo.indexOf('/')>-1 ;}]]></xp:this.rendered>
+									return !isEmpty(photocol) && !isEmpty( photo ) && photo.indexOf('fa')==-1 ;}]]></xp:this.rendered>
 	
 								<xp:this.attrs>
 									<xp:attr name="style">
@@ -134,21 +134,21 @@ return out;}]]></xp:this.styleClass>
 								</xp:div>
 								
 								<xp:text tagName="i" id="computedField1" escape="false" 
-									styleClass="#{javascript:'glyphicons unp-glyph-grey ' + thisRowData.getColumnValue(compositeData.photoColumn)}">
+									styleClass="#{javascript:'fa fa-grey ' + thisRowData.getColumnValue(compositeData.photoColumn)}">
 										<xp:this.rendered><![CDATA[#{javascript:var photocol = compositeData.photoColumn;
 										var photo = thisRowData.getColumnValue(photocol);
-									return !isEmpty(photocol) && !isEmpty( photo ) && photo.indexOf('/')==-1;}]]></xp:this.rendered>
+									return !isEmpty(photocol) && !isEmpty( photo ) && photo.indexOf('fa')>-1;}]]></xp:this.rendered>
 								
 								</xp:text>
 								
-								<xp:text tagName="i" id="icon" escape="false" 
-									styleClass="#{javascript:'glyphicons unp-glyph-grey ' + compositeData.placeHolderIcon}">
+								<!--<xp:text tagName="i" id="icon" escape="false" 
+									styleClass="#{javascript:'fa fa-grey ' + compositeData.placeHolderIcon}">
 										<xp:this.rendered><![CDATA[#{javascript:var photocol = compositeData.photoColumn;
 										var photo = thisRowData.getColumnValue(photocol);
 									return !isEmpty(photocol) && isEmpty( photo );}]]></xp:this.rendered>
 								
 								</xp:text>
-							</div>
+							--></div>
 
 							<xp:label id="label2"
 								value="#{javascript:thisRowData.getColumnValue(compositeData.summaryColumn);}">
