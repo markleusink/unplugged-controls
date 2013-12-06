@@ -221,5 +221,9 @@ no</editor-parameter>
         </designer-extension>
       </property-extension>
     </property>
+    <property>
+      <property-name>placeHolderIcon</property-name>
+      <property-class>string</property-class>
+    </property>
   </composite-component>
 </faces-config>

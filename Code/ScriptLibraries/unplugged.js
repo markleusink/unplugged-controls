@@ -164,7 +164,7 @@ function stopViewSpinner() {
 }
 
 function loadmore(dbName, viewName, summarycol, detailcol, category, xpage,
-		refreshmethod, photocol, collapserows, wrapsummarycol, ajaxload) {
+		refreshmethod, photocol, collapserows, wrapsummarycol, ajaxload, placeHolderIcon) {
 	try {
 		$(".loadmorelink").hide();
 		$("#loadmorespinner").show();
@@ -189,7 +189,8 @@ function loadmore(dbName, viewName, summarycol, detailcol, category, xpage,
 				+ encodeURIComponent(category) + "&xpage=" + xpage
 				+ "&wrapsummarycol=" + encodeURIComponent(wrapsummarycol)
 				+ "&dbName=" + dbName + "&refreshmethod=" + refreshmethod
-				+ "&start=" + pos + "&ajaxload=" + ajaxload;
+				+ "&start=" + pos + "&ajaxload=" + ajaxload
+				+ "&placeholder=" + placeHolderIcon;
 		thisArea.load(url + " #results", function() {
 			$("#flatViewRowSet").append($(".summaryDataRow li"));
 			if ($(".summaryDataRow").text().indexOf("NOMORERECORDS") > -1) {
@@ -219,10 +220,13 @@ function loadmore(dbName, viewName, summarycol, detailcol, category, xpage,
 	}
 }
 
-function openDocument(url, target) {
+function openDocument(url, target, loadFooter, replaceState) {
 	// $.blockUI();
 	// document.location.href = url;
 	var thisArea = $("#" + target);
+	
+	var replace = ( arguments.length >= 4 && replaceState);
+	
 	thisArea.load(url.replace(" ", "%20") + " #contentwrapper",
 			function(data, status, xhr) {
 				if (status=="error") {
@@ -233,7 +237,15 @@ function openDocument(url, target) {
 						firedrequests = new Array();
 					}
 	
-					unp.storePageRequest(url);
+					unp.storePageRequest(url, replace);
+					
+					//extract footer content from ajax request and update footer
+					if (loadFooter) {
+						var footerNode = $(data).find(".footer");
+						if (footerNode) {
+							$(".footer").replaceWith( footerNode );
+						}
+					}
 	
 					initiscroll();
 					if (url.indexOf("editDocument") > -1
@@ -283,7 +295,7 @@ function saveDocument(formid, unid, viewxpagename, formname, parentunid, dbname)
 						openDocument(
 								viewxpagename
 										+ "?action=openDocument&documentId="
-										+ response, "content");
+										+ response, "content", true, true);
 						initiscroll();
 					} else {
 						alert(response);
@@ -345,7 +357,7 @@ function hideViewsMenu() {
 }
 
 var firedrequests;
-function loadPage(url, target, menuitem, pushState) {
+function loadPage(url, target, menuitem, pushState, loadFooter) {
 
 	var _pushState = true;
 	if (arguments.length >= 4) {
@@ -361,6 +373,14 @@ function loadPage(url, target, menuitem, pushState) {
 	
 			if (firedrequests != null) {
 				firedrequests = new Array();
+			}
+			
+			//extract footer content from ajax request and update footer
+			if (loadFooter) {
+				var footerNode = $(data).find(".footer");
+				if (footerNode) {
+					$(".footer").replaceWith( footerNode );
+				}
 			}
 	
 			if (_pushState) {
@@ -837,9 +857,9 @@ if (!unp) {
 	var unp = {
 
 		_firstLoad : true,
-
-		storePageRequest : function(url) {
-
+		
+		storePageRequest : function(url, replace) {
+			
 			this._firstLoad = false;
 
 			if (url.indexOf("#") > -1) {
@@ -849,7 +869,11 @@ if (!unp) {
 				url += "?";
 			}
 			url += "&history=true";
-			history.pushState(null, "", url);
+			if (arguments.length > 1 && replace) {
+				history.replaceState(null, "", url);
+			} else {
+				history.pushState(null, "", url);
+			}
 			console.log("pushed " + url);
 
 		}

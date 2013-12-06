@@ -117,25 +117,38 @@ if (compositeData.enableAZPicker == "yes"){
 	out += " no-picker";
 }
 return out;}]]></xp:this.styleClass>
-							<xp:image
-								url="#{javascript:thisRowData.getColumnValue(compositeData.photoColumn)}">
-								<xp:this.rendered><![CDATA[#{javascript:if (compositeData.photoColumn != null && compositeData.photoColumn != ""){
-	try{
-		if (thisRowData.getColumnValue(compositeData.photoColumn) != ""){
-			return true;
-		}else{
-			return false;
-		}
-	}catch(e){
-		return false;
-	}
-}else{
-	return false;
-}}]]></xp:this.rendered>
-								<xp:this.styleClass><![CDATA[#{javascript:if (thisRowData.getColumnValue(compositeData.photoColumn) != ""){
-	return "rowphoto";
-}}]]></xp:this.styleClass>
-							</xp:image>
+							<div class="thumbContainer">
+						
+								<xp:div styleClass="bgThumbnail">
+									<xp:this.rendered><![CDATA[#{javascript:var photocol = compositeData.photoColumn;
+									var photo = thisRowData.getColumnValue(photocol);
+									return !isEmpty(photocol) && !isEmpty( photo ) && photo.indexOf('/')>-1 ;}]]></xp:this.rendered>
+	
+								<xp:this.attrs>
+									<xp:attr name="style">
+										<xp:this.value><![CDATA[#{javascript:var photo = thisRowData.getColumnValue(compositeData.photoColumn);
+	
+	"background-image: url('" + photo + "');"}]]></xp:this.value>
+									</xp:attr>
+								</xp:this.attrs>
+								</xp:div>
+								
+								<xp:text tagName="i" id="computedField1" escape="false" 
+									styleClass="#{javascript:'glyphicons unp-glyph-grey ' + thisRowData.getColumnValue(compositeData.photoColumn)}">
+										<xp:this.rendered><![CDATA[#{javascript:var photocol = compositeData.photoColumn;
+										var photo = thisRowData.getColumnValue(photocol);
+									return !isEmpty(photocol) && !isEmpty( photo ) && photo.indexOf('/')==-1;}]]></xp:this.rendered>
+								
+								</xp:text>
+								
+								<xp:text tagName="i" id="icon" escape="false" 
+									styleClass="#{javascript:'glyphicons unp-glyph-grey ' + compositeData.placeHolderIcon}">
+										<xp:this.rendered><![CDATA[#{javascript:var photocol = compositeData.photoColumn;
+										var photo = thisRowData.getColumnValue(photocol);
+									return !isEmpty(photocol) && isEmpty( photo );}]]></xp:this.rendered>
+								
+								</xp:text>
+							</div>
 
 							<xp:label id="label2"
 								value="#{javascript:thisRowData.getColumnValue(compositeData.summaryColumn);}">
