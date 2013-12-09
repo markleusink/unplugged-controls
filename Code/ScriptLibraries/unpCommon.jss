@@ -140,9 +140,9 @@ function isEmpty( input ) {
 	    return true;    
 	}
 	if (typeof input == 'string') {
-	    return input.equals("");
+	    return input.equals("") || input.equals("null");
 	} else if (input.toString != null) {
-	    return input.toString().equals("");
+	    return input.toString().equals("") || input.toString().equals("null");
 	}
 	return false;
 }
